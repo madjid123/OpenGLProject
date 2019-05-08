@@ -19,6 +19,11 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include"imgui/imgui.h"
+#include"imgui/imgui_impl_glfw_gl3.h"
+#include "tests/testClearColor.h"
+#include "tests/TestTexture2D.h"
+
 int main(void)
 {
 	glewInit();
@@ -48,77 +53,62 @@ int main(void)
 	if (glewInit() != GLEW_OK)
 		std::cout << "Error!!" << std::endl;
 	{
-		//position of the triangle 
-		float position[] = {
-		   -0.5f, -0.5f, 0.0f, 0.0f, //0
-			0.5f, -0.5f, 1.0f, 0.0f, //1
-			0.5f,  0.5f, 1.0f, 1.0f, //2
-		   -0.5f,  0.5f, 0.0f, 1.0f  //3
-		};
-
-		//repeated indecies of the square (optimized method)
-		unsigned int indecies[] = {
-			0,1,2,
-			2,3,0
-		};
 		glCall(glEnable(GL_BLEND));
 		glCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-		VertexArray va;
-		VertexBuffer vb(position, 4 * 4 * sizeof(float));
-		VertexBufferLayout layout;
-		layout.Push<float>(2);
-		layout.Push<float>(2);
-		va.AddBuffer(vb, layout);
-		IndexBuffer ib(indecies, 6);
-
 		std::cout << glGetString(GL_VERSION) << std::endl;
 
-		shader shader("res/shader/vbasic.shader");
-		shader.Bind();
-		Renderer Renderer;
-		Texture texture("res/textures/h.png");
-		texture.Bind();
+		Renderer render;
 
+		ImGui::CreateContext();
+		ImGui_ImplGlfwGL3_Init(window, true);
+		ImGui::StyleColorsDark();
+		
+		test::test *CurrentTest = nullptr;
+		test::testMenu *testMenu = new test::testMenu(CurrentTest);
+		CurrentTest = testMenu;
+		testMenu->RegisterTest<test::testClearColor>("Clear color");
+		testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
 
-		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-		shader.SetUniform4f("u_color", 0.1f, 0.5f, 0.8f, 1.0f);
-		shader.SetUniformMat4f("u_MVP", proj);
-
-		shader.SetUniformi("u_Texture", 0);
-
-		va.Unbind();
-		vb.unbind();
-		ib.unbind();
-		shader.Unbind();
-
-		float r = 0.0f;
-		float increment = 0.05f;
-
-		/* Loop until the user closes the window */
+	
 		while (!glfwWindowShouldClose(window))
 		{
+			glCall(glClearColor(0.5f, 0.0f, 0.0f, 1.0f));
+			render.Clear();
+			ImGui_ImplGlfwGL3_NewFrame();
 
-			/* Render here */
-			Renderer.Clear();
-			shader.Bind();
-			shader.SetUniform4f("u_color", r, 0.5f, 0.8f, 1.0f);
-			Renderer.Draw(va, ib, shader);
-
-			//Make a simple animation with the color
-			if (r > 1.0f)
-				increment = -0.05f;
-			else if (r < 0.0f)
-				increment = 0.05f;
-			r += increment;
-
-			/* Swap front and back buffers */
+			if (CurrentTest)
+			{
+				CurrentTest->OnUpdate(0.0f);
+				CurrentTest->OnRender();
+				ImGui::Begin("test");
+				if (CurrentTest != testMenu && ImGui::Button("<-"))
+				{
+					delete CurrentTest;
+					CurrentTest = testMenu;
+				}
+				CurrentTest->OnImGuiRender();
+				ImGui::End();
+			}
+			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 			glfwSwapBuffers(window);
 
 			/* Poll for and process events */
 			glfwPollEvents();
 		}
+	
+		
+		if (CurrentTest != testMenu)
+		{
+			delete CurrentTest;
+			delete testMenu;
+		}
+		delete CurrentTest;
 	}
+	
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
 	glfwTerminate();
 	return 0;
 }

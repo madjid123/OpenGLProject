@@ -1,6 +1,6 @@
 
 #pragma once
-//define a function that detect error in every Gl Function
+
 #include<GL/glew.h>
 #include"IndexBuffer.h"
 #include"VertexArray.h"

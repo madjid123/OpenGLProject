@@ -139,8 +139,14 @@
     <ClCompile Include="SRC\IndexBuffer.cpp" />
     <ClCompile Include="SRC\Renderer.cpp" />
     <ClCompile Include="SRC\Shader.cpp" />
+    <ClCompile Include="SRC\tests\test.cpp" />
+    <ClCompile Include="SRC\tests\testClearColor.cpp" />
+    <ClCompile Include="SRC\tests\TestTexture2D.cpp" />
     <ClCompile Include="SRC\Texture.cpp" />
     <ClCompile Include="SRC\vendor\glm\detail\glm.cpp" />
+    <ClCompile Include="SRC\vendor\imgui\imgui.cpp" />
+    <ClCompile Include="SRC\vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="SRC\vendor\imgui\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="SRC\vendor\stb_image\stb_image.cpp" />
     <ClCompile Include="SRC\VertexArray.cpp" />
     <ClCompile Include="SRC\VertexBuffer.cpp" />
@@ -283,6 +289,8 @@
     <ClInclude Include="SRC\IndexBuffer.h" />
     <ClInclude Include="SRC\Renderer.h" />
     <ClInclude Include="SRC\Shader.h" />
+    <ClInclude Include="SRC\tests\test.h" />
+    <ClInclude Include="SRC\tests\testClearColor.h" />
     <ClInclude Include="SRC\Texture.h" />
     <ClInclude Include="SRC\vendor\glm\common.hpp" />
     <ClInclude Include="SRC\vendor\glm\detail\compute_common.hpp" />
@@ -524,10 +532,18 @@
     <ClInclude Include="SRC\vendor\glm\vec3.hpp" />
     <ClInclude Include="SRC\vendor\glm\vec4.hpp" />
     <ClInclude Include="SRC\vendor\glm\vector_relational.hpp" />
+    <ClInclude Include="SRC\vendor\imgui\imconfig.h" />
+    <ClInclude Include="SRC\vendor\imgui\imgui.h" />
+    <ClInclude Include="SRC\vendor\imgui\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="SRC\vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="SRC\vendor\imgui\stb_rect_pack.h" />
+    <ClInclude Include="SRC\vendor\imgui\stb_textedit.h" />
+    <ClInclude Include="SRC\vendor\imgui\stb_truetype.h" />
     <ClInclude Include="SRC\vendor\stb_image\stb_image.h" />
     <ClInclude Include="SRC\VertexBuffer.h" />
     <ClInclude Include="SRC\VertexArray.h" />
     <ClInclude Include="SRC\VertexBufferLayout.h" />
+    <ClInclude Include="SRC\tests\TestTexture2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
